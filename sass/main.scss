@@ -1,6 +1,12 @@
 // colors
-$bg-color: #fff;
-$logo-color: #000;
+$bg-color: #f0f0e9;
+$logo-color: linear-gradient(to right, #e53c2c, #d53325);
+$logo-border-color: #fe4236;
+$title-color: #6b6454;
+
+// fonts
+@import url("https://fonts.googleapis.com/css?family=Bitter:400,700");
+$bitter-font: 'Bitter', serif;
 
 // mixins
 @mixin center {
@@ -12,22 +18,41 @@ $logo-color: #000;
     margin: auto;
 }
 
+@mixin center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @mixin pseudo($position: absolute, $content: "") {
     content: $content;
     position: $position;
 }
 
-@mixin breakpoint($point) {
-    @if $point==tablet {
-        @media (max-width: 1024px) and (min-width: 768px) {
-            @content ;
-        }
+@mixin reset() {
+  * {
+    &,
+    &::before,
+    &::after {
+      box-sizing: border-box;
+      display: block;
     }
-    @else if $point==mobile {
-        @media (max-width: 480px) and (min-width: 320px) {
-            @content ;
-        }
-    }
+  }
+  position: relative;
+  z-index: 1;
+}
+
+// keyframes
+@keyframes glowing {
+  0%{
+    border: 1vmin solid darken($logo-border-color, 10%);
+    filter: drop-shadow(0 0 0 $logo-border-color);
+  }
+
+  100%{
+    border: 1vmin solid $logo-border-color;
+    filter: drop-shadow(0 0 5vmin $logo-border-color);
+  }
 }
 
 html, body{
@@ -36,10 +61,110 @@ html, body{
 }
 
 body{
+  @include center-flex;
+  height: 100vh;
   background: $bg-color;
   overflow: hidden;
 }
 
 .logo{
-  @include center;
+  @include reset;
+  margin-top: -30vmin;
+  margin-right: 1.5vmin;
+  width: 35.5vmin;
+  height: 35.5vmin;
+  background: $logo-color;
+  border-radius: 3.5vmin;
+  border: 1vmin solid $logo-border-color;
+  transform: rotate(45deg);
+  animation: glowing 1.5s linear infinite;
+
+  .line{
+    position: absolute;
+    z-index: 1;
+    top: 8.2vmin;
+    left: -1vmin;
+    width: 29vmin;
+    height: 3.9vmin;
+    background: $bg-color;
+    border: 0.3vmin solid $logo-border-color;
+    border-left: none;
+
+    &:after{
+      @include pseudo;
+      top: 7.22vmin;
+      left: 12vmin;
+      width: 14vmin;
+      height: 3.9vmin;
+      background: $bg-color;
+      transform: rotate(45deg);
+      border: 0.3vmin solid $logo-border-color;
+    }
+  }
+
+  .line-2{
+    position: absolute;
+    z-index: 3;
+    top: 8.5vmin;
+    left: -1vmin;
+    width: 29vmin;
+    height: 3.3vmin;
+    background: $bg-color;
+    border-left: none;
+
+    &:after{
+      @include pseudo;
+      top: 8vmin;
+      left: 11vmin;
+      width: 17vmin;
+      height: 3.3vmin;
+      background: $bg-color;
+      transform: rotate(45deg);
+    }
+  }
+
+  .circle{
+    position: absolute;
+    z-index: 2;
+    left: 6.3vmin;
+    top: 6.2vmin;
+    width: 8.25vmin;
+    height: 8.25vmin;
+    background: $bg-color;
+    border-radius: 50%;
+    border: 0.3vmin solid $logo-border-color;
+
+    &:before{
+      @include pseudo;
+      top: -0.3vmin;
+      left: 14.6vmin;
+      width: 8.25vmin;
+      height: 8.25vmin;
+      border-radius: 50%;
+      background: $bg-color;
+      border: 0.3vmin solid $logo-border-color;
+    }
+
+    &:after{
+      @include pseudo;
+      left: 14.6vmin;
+      top: 14.6vmin;
+      width: 8.25vmin;
+      height: 8.25vmin;
+      border-radius: 50%;
+      background: $bg-color;
+      border: 0.3vmin solid $logo-border-color;
+    }
+  }
+}
+
+.title{
+  position: absolute;
+  top: 63.5vh;
+  margin-left: -2vmin;
+  text-align: center;
+  font-family: $bitter-font;
+  font-size: 20.5vmin;
+  color: $title-color;
+  font-weight: 700;
 }
